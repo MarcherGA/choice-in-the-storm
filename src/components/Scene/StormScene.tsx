@@ -1,10 +1,12 @@
 import { Suspense } from 'react';
 import { CameraRig } from './CameraRig';
 import { Ground } from './Ground';
+import { DesertTerrain } from './DesertTerrain';
 import { Rain } from './Rain';
 import { Lightning } from './Lightning';
 import { Atmosphere } from './Atmosphere';
 import { Effects } from './Effects';
+import { SoundManager } from './SoundManager';
 
 /**
  * Main storm scene component
@@ -16,16 +18,19 @@ export function StormScene() {
       {/* Camera system with parallax motion */}
       <CameraRig />
 
-      {/* Atmospheric elements */}
+      {/* Atmospheric elements (sky + fog) */}
       <Atmosphere />
 
-      {/* Lighting system */}
+      {/* Lighting system with lightning flashes */}
       <Lightning />
 
-      {/* Scene geometry wrapped in Suspense for texture loading */}
+      {/* Scene geometry wrapped in Suspense */}
       <Suspense fallback={null}>
-        {/* Ground plane */}
+        {/* Endless road */}
         <Ground />
+
+        {/* Desert terrain on sides */}
+        <DesertTerrain />
       </Suspense>
 
       {/* Particle systems */}
@@ -33,6 +38,9 @@ export function StormScene() {
 
       {/* Post-processing effects */}
       <Effects />
+
+      {/* Sound manager (placeholder structure) */}
+      <SoundManager />
     </>
   );
 }

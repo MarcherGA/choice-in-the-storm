@@ -5,22 +5,26 @@ varying float vAlpha;
 varying float vDistance;
 
 void main() {
-  // Create elongated streak shape
+  // Create elongated vertical streak shape
   vec2 coord = gl_PointCoord - vec2(0.5);
-  float dist = length(coord);
-  
-  // Vertical elongation for streak effect
-  float streak = smoothstep(0.5, 0.0, abs(coord.x) * 2.0);
-  streak *= smoothstep(0.8, 0.0, abs(coord.y));
-  
-  // Final alpha with streak shape
+
+  // Create thin vertical line streak (not a square)
+  float horizontalFalloff = smoothstep(0.15, 0.0, abs(coord.x));
+  float verticalLength = smoothstep(0.8, 0.0, coord.y + 0.3); // Long vertical streak
+
+  float streak = horizontalFalloff * verticalLength;
+
+  // Make streak more visible
+  streak = pow(streak, 0.4);
+
+  // Final alpha
   float alpha = streak * vAlpha;
-  
+
   // Discard fully transparent pixels
-  if (alpha < 0.01) discard;
-  
-  // White/light blue rain color
-  vec3 rainColor = vec3(0.85, 0.9, 1.0);
-  
-  gl_FragColor = vec4(rainColor, alpha);
+  if (alpha < 0.02) discard;
+
+  // Bright white rain color
+  vec3 rainColor = vec3(0.9, 0.95, 1.0);
+
+  gl_FragColor = vec4(rainColor, alpha * 2.5);
 }

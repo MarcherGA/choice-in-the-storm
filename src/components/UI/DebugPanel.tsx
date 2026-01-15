@@ -6,45 +6,43 @@ import { useSceneStore } from '../../store/useSceneStore';
  * Exposes all critical scene controls via Leva GUI
  */
 export function DebugPanel() {
-  const setRainSpeed = useSceneStore((state) => state.setRainSpeed);
-  const setRainCount = useSceneStore((state) => state.setRainCount);
-  const setLightningFrequency = useSceneStore(
-    (state) => state.setLastLightningTime
-  );
-  const setFogDensity = useSceneStore((state) => state.setFogDensity);
-  const setFogHeight = useSceneStore((state) => state.setFogHeight);
-  const setCameraDamping = useSceneStore((state) => state.setCameraDamping);
-  const setGroundRoughness = useSceneStore((state) => state.setGroundRoughness);
-  const setSceneBrightness = useSceneStore((state) => state.setSceneBrightness);
-  const setEnablePostProcessing = useSceneStore(
-    (state) => state.setEnablePostProcessing
-  );
-  const setEnableRain = useSceneStore((state) => state.setEnableRain);
-  const setEnableLightning = useSceneStore((state) => state.setEnableLightning);
-
-  // Create Leva controls
-  useControls('Rain', {
+  // Create Leva controls with organized folders
+  useControls('🌧️ Rain', {
     rainSpeed: {
       value: 15,
       min: 1,
       max: 30,
       step: 0.5,
-      onChange: (value) => setRainSpeed(value),
+      label: 'Fall Speed',
+      onChange: (value) => useSceneStore.getState().setRainSpeed(value),
+    },
+    windStrength: {
+      value: 2,
+      min: 0,
+      max: 10,
+      step: 0.5,
+      label: 'Wind Drift',
+      onChange: (value) => {
+        const store = useSceneStore.getState();
+        store.windStrength = value;
+      },
     },
     rainCount: {
       value: 20000,
-      min: 1000,
+      min: 5000,
       max: 50000,
-      step: 1000,
-      onChange: (value) => setRainCount(value),
+      step: 5000,
+      label: 'Particle Count',
+      onChange: (value) => useSceneStore.getState().setRainCount(value),
     },
     enableRain: {
       value: true,
-      onChange: (value) => setEnableRain(value),
+      label: 'Enable',
+      onChange: (value) => useSceneStore.getState().setEnableRain(value),
     },
   });
 
-  useControls('Lightning', {
+  useControls('⚡ Lightning', {
     lightningFrequency: {
       value: 3,
       min: 0.5,
@@ -58,58 +56,57 @@ export function DebugPanel() {
     },
     enableLightning: {
       value: true,
-      onChange: (value) => setEnableLightning(value),
+      label: 'Enable',
+      onChange: (value) => useSceneStore.getState().setEnableLightning(value),
     },
   });
 
-  useControls('Fog', {
+  useControls('🌫️ Atmosphere', {
+    sceneBrightness: {
+      value: 0.3,
+      min: 0.1,
+      max: 2,
+      step: 0.1,
+      label: 'Overall Brightness',
+      onChange: (value) => useSceneStore.getState().setSceneBrightness(value),
+    },
     fogDensity: {
       value: 0.08,
       min: 0,
       max: 0.3,
       step: 0.01,
-      onChange: (value) => setFogDensity(value),
-    },
-    fogHeight: {
-      value: 20,
-      min: 5,
-      max: 50,
-      step: 1,
-      onChange: (value) => setFogHeight(value),
+      label: 'Fog Density',
+      onChange: (value) => useSceneStore.getState().setFogDensity(value),
     },
   });
 
-  useControls('Camera', {
+  useControls('🎥 Camera', {
     cameraDamping: {
       value: 0.05,
       min: 0.01,
       max: 0.2,
       step: 0.01,
-      onChange: (value) => setCameraDamping(value),
+      label: 'Mouse Smoothing',
+      onChange: (value) => useSceneStore.getState().setCameraDamping(value),
     },
   });
 
-  useControls('Ground', {
+  useControls('🛣️ Ground', {
     groundRoughness: {
       value: 0.1,
       min: 0,
       max: 1,
       step: 0.05,
-      onChange: (value) => setGroundRoughness(value),
+      label: 'Wetness',
+      onChange: (value) => useSceneStore.getState().setGroundRoughness(value),
     },
   });
 
-  useControls('Scene', {
-    sceneBrightness: {
-      value: 0.4,
-      min: 0,
-      max: 2,
-      step: 0.1,
-      onChange: (value) => setSceneBrightness(value),
-    },
+  useControls('🎬 Effects', {
     enablePostProcessing: {
       value: true,
-      onChange: (value) => setEnablePostProcessing(value),
+      label: 'Post-Processing',
+      onChange: (value) => useSceneStore.getState().setEnablePostProcessing(value),
     },
   });
 

@@ -37,14 +37,15 @@ void main() {
   vDistance = distance(worldPosition.xyz, uCameraPosition);
   
   // Fade out near ground and far from camera
-  float groundFade = smoothstep(-20.0, -10.0, worldPosition.y);
-  float distanceFade = 1.0 - smoothstep(30.0, 80.0, vDistance);
-  
-  vAlpha = groundFade * distanceFade * 0.6;
-  
+  float groundFade = smoothstep(-20.0, -5.0, worldPosition.y);
+  float distanceFade = 1.0 - smoothstep(40.0, 100.0, vDistance);
+
+  // INCREASED base alpha for better visibility
+  vAlpha = groundFade * distanceFade * 0.9;
+
   // Project to screen space
   gl_Position = projectionMatrix * viewMatrix * worldPosition;
-  
-  // Point size based on distance
-  gl_PointSize = 2.0 * (1.0 / vDistance) * 100.0;
+
+  // Larger point size for better visibility
+  gl_PointSize = max(3.0, 4.0 * (1.0 / vDistance) * 100.0);
 }

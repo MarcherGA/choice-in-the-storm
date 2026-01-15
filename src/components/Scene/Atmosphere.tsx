@@ -1,35 +1,30 @@
 import { useMemo } from 'react';
 import { Color } from 'three';
 import { useSceneStore } from '../../store/useSceneStore';
+import { Sky } from './Sky';
 
 /**
- * Two-layer atmospheric fog system
- * Combines built-in exponential fog with custom height-based fog
+ * Atmospheric system combining sky dome and distance fog
+ * Creates depth and dramatic storm atmosphere
  */
 export function Atmosphere() {
-  const fogDensity = useSceneStore((state) => state.fogDensity);
   const fogColor = useSceneStore((state) => state.fogColor);
 
-  // Create fog color from store values
+  // Create fog color from store values (storm blue-gray)
   const color = useMemo(() => {
     return new Color(fogColor[0], fogColor[1], fogColor[2]);
   }, [fogColor]);
 
   return (
     <>
-      {/* Exponential fog for base atmospheric scattering */}
-      <fog attach="fog" args={[color, 10, 100]} />
+      {/* Stormy sky dome with clouds */}
+      <Sky />
 
-      {/* 
-        Additional custom fog shader would be implemented via:
-        - Full-screen quad with custom shader material
-        - Depth texture from render target
-        - Applied in post-processing or as separate pass
-        
-        For this prototype, we use the built-in fog which provides
-        good performance and visual quality. The custom shader in
-        fog.glsl is available for future enhancement.
-      */}
+      {/* Distance-based exponential fog for depth - DARKER */}
+      <fog attach="fog" args={[color, 30, 150]} />
+
+      {/* Very dark background for stormy night */}
+      <color attach="background" args={['#0a0d12']} />
     </>
   );
 }

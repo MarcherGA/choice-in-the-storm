@@ -83,8 +83,8 @@ export const useSceneStore = create<SceneState>((set) => ({
   groundRoughness: 0.1,
   setGroundRoughness: (roughness) => set({ groundRoughness: roughness }),
 
-  // Scene defaults
-  sceneBrightness: 0.4,
+  // Scene defaults - reduced for dark stormy night atmosphere
+  sceneBrightness: 0.3,
   setSceneBrightness: (brightness) => set({ sceneBrightness: brightness }),
 
   // Toggle defaults
